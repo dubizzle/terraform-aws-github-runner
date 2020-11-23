@@ -7,6 +7,8 @@ yum update -y
 
 # Install docker
 amazon-linux-extras install docker
+# Installing helper to login to ECR using EC2 IAM role
+yum install -y amazon-ecr-credential-helper
 service docker start
 usermod -a -G docker ec2-user
 
@@ -14,6 +16,11 @@ yum install -y curl jq git
 
 # Install runner
 cd /home/ec2-user
+# Adding credHelper to login to ECR using EC2 IAM role
+mkdir .docker && echo "{\"credHelpers\": {\"604664627747.dkr.ecr.eu-west-1.amazonaws.com\": \"ecr-login\"}}" >> .docker/config.json
+service docker restart
+chown ec2-user:ec2-user /home/ec2-user/.docker -R
+
 mkdir actions-runner && cd actions-runner
 
 aws s3 cp ${s3_location_runner_distribution} actions-runner.tar.gz
