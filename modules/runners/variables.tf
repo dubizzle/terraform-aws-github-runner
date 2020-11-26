@@ -180,7 +180,7 @@ variable "runner_as_root" {
 variable "runners_maximum_count" {
   description = "The maximum number of runners that will be created."
   type        = number
-  default     = 3
+  default     = 10
 }
 
 variable "encryption" {
